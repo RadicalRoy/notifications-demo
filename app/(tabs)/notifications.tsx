@@ -13,7 +13,7 @@ export default function TabTwoScreen() {
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
       headerElement={
-        <ThemedView style={styles.headerImage}>
+        <ThemedView style={styles.headerElement}>
           <ThemedText type="defaultSemiBold">Notifications</ThemedText>
         </ThemedView>
       }
@@ -24,10 +24,11 @@ export default function TabTwoScreen() {
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
+  headerElement: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: 50,
   },
   titleContainer: {
     flexDirection: "row",

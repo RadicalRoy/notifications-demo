@@ -4,6 +4,7 @@ import { sendNotification, useNotifications } from "@/hooks/useNotifications";
 import { useCallback, useMemo } from "react";
 import { FlashList, type ListRenderItem } from "@shopify/flash-list";
 import { type AppNotification } from "@/constants/Notifications";
+import { NotificationCard } from "./NotificationsCard";
 
 type NotificationsViewProps = {} & ViewProps;
 
@@ -12,12 +13,12 @@ export function NotificationsView({}: NotificationsViewProps) {
 
   // could add additional filtering logic here ('mentions', 'friend_requests', etc)
   const displayNotifs = useMemo(() => {
-    return notifications.reverse();
+    return notifications.slice().reverse();
   }, [notifications]);
 
   const renderItem = useCallback<ListRenderItem<AppNotification>>(
     ({ item }) => {
-      return <ThemedText>{item.notification.request.content.title}</ThemedText>;
+      return <NotificationCard item={item} />;
     },
     []
   );
@@ -26,12 +27,18 @@ export function NotificationsView({}: NotificationsViewProps) {
     <View style={styles.container}>
       <Pressable onPress={sendNotification}>
         <ThemedText>Send test notification</ThemedText>
-        <FlashList data={displayNotifs} renderItem={renderItem} />
       </Pressable>
+      <FlashList data={displayNotifs} renderItem={renderItem} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { height: "100%", overflow: "hidden" },
+  notificationCard: {
+    width: "100%",
+    height: 60,
+    flex: 1,
+    flexDirection: "row",
+  },
 });

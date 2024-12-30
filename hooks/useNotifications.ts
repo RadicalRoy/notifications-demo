@@ -1,5 +1,6 @@
 import {
   type AppNotification,
+  type notificationCategory,
   notificationCategories as categories,
 } from "@/constants/Notifications";
 import * as Notifications from "expo-notifications";
@@ -12,7 +13,7 @@ export const sendNotification = () => {
       title: getNotificationsMessage({ name, category }),
       body: null,
       categoryIdentifier: category,
-      data: { name }, // have to set type of data somewhere...
+      data: { name, category, date: Date.now() }, // have to set type of data somewhere...
     },
     trigger: null,
   });
@@ -24,6 +25,7 @@ export const sendNotification = () => {
     (alternatively a singleton styled hook implementation could work so that calling it anywhere
     returns the correct value)
 */
+// Should try Zustand for the above approach. Singleton state hook is literally what they do
 
 export const useNotifications = () => {
   /*
@@ -63,7 +65,11 @@ export const useNotifications = () => {
 
         setNotifications((currentNotifications) => [
           ...currentNotifications,
-          { notification: newNotification, isRead: false },
+          {
+            notification: newNotification,
+            isRead: false,
+            dateReceived: Date.now(),
+          },
         ]);
       });
 
@@ -113,9 +119,9 @@ const getNotificationsMessage = ({
   category,
 }: {
   name: string;
-  category: (typeof categories)[number];
+  category: notificationCategory;
 }) => {
-  const map: Record<(typeof categories)[number], string> = {
+  const map: Record<notificationCategory, string> = {
     community_invite: `@${name} sent you a community invite!`,
     friend_request: `@${name} sent you a friend request!`,
     mention: `@${name} mentioned you in a post!`,
