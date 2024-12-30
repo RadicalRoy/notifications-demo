@@ -12,6 +12,7 @@ export function NotificationsView({}: NotificationsViewProps) {
   const { notifications } = useNotifications();
 
   // could add additional filtering logic here ('mentions', 'friend_requests', etc)
+  // TODO: SHOULD REFRESH THE VIEW EVERY MINUTE - Maybe just refresh the timestamps
   const displayNotifs = useMemo(() => {
     return notifications.slice().reverse();
   }, [notifications]);
@@ -25,9 +26,9 @@ export function NotificationsView({}: NotificationsViewProps) {
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={sendNotification}>
+      {/* <Pressable onPress={sendNotification}>
         <ThemedText>Send test notification</ThemedText>
-      </Pressable>
+      </Pressable> */}
       <FlashList data={displayNotifs} renderItem={renderItem} />
     </View>
   );

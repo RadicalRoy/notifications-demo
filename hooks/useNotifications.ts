@@ -51,17 +51,13 @@ export const useNotifications = () => {
       handleError: async (_notificationId, error) => {
         console.error(error);
       },
-      handleSuccess: async () => {
-        console.log("notificationSuccess");
-      },
+      handleSuccess: async () => {},
     });
 
     // Set listeners
     notificationListener.current =
       Notifications.addNotificationReceivedListener((newNotification) => {
-        Notifications.getBadgeCountAsync().then((num) =>
-          console.log("badgecount", num)
-        );
+        // Notifications.getBadgeCountAsync().then((num) => {});
 
         setNotifications((currentNotifications) => [
           ...currentNotifications,
@@ -78,12 +74,18 @@ export const useNotifications = () => {
     sendNotification();
     sendNotification();
 
+    // there are some options for scheduling regular notifications in the API, but this is sufficient
+    const notificationInterval = setInterval(() => {
+      sendNotification();
+    }, 5000 + Math.floor(Math.random() * 5000));
+
     return () => {
       // cleanup listeners
       notificationListener.current &&
         Notifications.removeNotificationSubscription(
           notificationListener.current
         );
+      clearInterval(notificationInterval);
       // cancel any pending notifications
       Notifications.cancelAllScheduledNotificationsAsync();
     };

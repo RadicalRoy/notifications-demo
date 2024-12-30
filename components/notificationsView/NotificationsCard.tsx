@@ -27,8 +27,6 @@ export const NotificationCard = ({ item }: NotificationCardProps) => {
 
   const { dateReceived } = item;
 
-  console.log(`${name} - ${category} rendered  with isRead `);
-
   return (
     <Pressable
       onPress={() => {
@@ -37,8 +35,6 @@ export const NotificationCard = ({ item }: NotificationCardProps) => {
           item.isRead = true;
           setIsRead(true);
         }
-
-        console.log("pressed");
       }}
       key={item.notification.request.identifier}
     >
