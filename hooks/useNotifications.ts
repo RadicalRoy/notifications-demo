@@ -91,7 +91,7 @@ export const useNotifications = () => {
     };
   }, []);
 
-  return { notifications };
+  return { notifications, setNotifications };
 };
 
 const generateRandomNotificationsData = () => {

@@ -5,19 +5,11 @@ import {
 import { Pressable, View, StyleSheet } from "react-native";
 import { ThemedText } from "../ThemedText";
 import { IconSymbol } from "../ui/IconSymbol";
-import { useRef, useState } from "react";
 
 // want the item ref so that we can directly update the isRead property
-type NotificationCardProps = { item: AppNotification };
+type NotificationCardProps = { item: AppNotification; markRead: () => void };
 
-export const NotificationCard = ({ item }: NotificationCardProps) => {
-  const itemRef = useRef<AppNotification>(item);
-  const [isRead, setIsRead] = useState<boolean>(item.isRead);
-  // update state when element is recycled
-  if (item !== itemRef.current) {
-    itemRef.current = item;
-    setIsRead(item.isRead);
-  }
+export const NotificationCard = ({ item, markRead }: NotificationCardProps) => {
   // should validate the data
   // cast is not ideal
   const { name, category } = item.notification.request.content.data as {
@@ -28,20 +20,11 @@ export const NotificationCard = ({ item }: NotificationCardProps) => {
   const { dateReceived } = item;
 
   return (
-    <Pressable
-      onPress={() => {
-        // mark read here
-        if (!isRead) {
-          item.isRead = true;
-          setIsRead(true);
-        }
-      }}
-      key={item.notification.request.identifier}
-    >
+    <Pressable onPress={markRead}>
       <View
         style={{
           ...styles.notificationCard,
-          backgroundColor: isRead ? "#252242" : "#2c3950",
+          backgroundColor: item.isRead ? "#252242" : "#2c3950",
         }}
       >
         <View style={styles.iconContainer}>
